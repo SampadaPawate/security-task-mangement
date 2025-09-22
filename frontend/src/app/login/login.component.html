@@ -1,0 +1,115 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h2 class="auth-title">
+        {{ isLoginMode ? 'Welcome Back' : 'Create Account' }}
+      </h2>
+      <p class="auth-subtitle">
+        {{ isLoginMode ? 'Sign in to your task management dashboard' : 'Join our secure task management system' }}
+      </p>
+    </div>
+    
+    <div class="auth-form-container">
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control"
+            placeholder="Enter your email"
+          />
+          <div *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched" class="error-message">
+            <div *ngIf="authForm.get('email')?.errors?.['required']">Email is required</div>
+            <div *ngIf="authForm.get('email')?.errors?.['email']">Please enter a valid email address</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            placeholder="Enter your password"
+          />
+          <div *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched" class="error-message">
+            <div *ngIf="authForm.get('password')?.errors?.['required']">Password is required</div>
+            <div *ngIf="authForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLoginMode" class="name-fields">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              formControlName="firstName"
+              class="form-control"
+              placeholder="First name"
+            />
+            <div *ngIf="authForm.get('firstName')?.invalid && authForm.get('firstName')?.touched" class="error-message">
+              <div *ngIf="authForm.get('firstName')?.errors?.['required']">First name is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              formControlName="lastName"
+              class="form-control"
+              placeholder="Last name"
+            />
+            <div *ngIf="authForm.get('lastName')?.invalid && authForm.get('lastName')?.touched" class="error-message">
+              <div *ngIf="authForm.get('lastName')?.errors?.['required']">Last name is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLoginMode" class="form-group">
+          <label for="role">Role</label>
+          <select 
+            formControlName="role" 
+            class="form-control"
+          >
+            <option value="viewer">Viewer - Read only access</option>
+            <option value="admin">Admin - Full access to organization</option>
+            <option value="owner">Owner - Full system access</option>
+          </select>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-banner">
+          {{ errorMessage }}
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="authForm.invalid"
+          class="btn btn-primary btn-full"
+        >
+          {{ isLoginMode ? 'Sign In' : 'Create Account' }}
+        </button>
+
+        <div class="auth-toggle">
+          <button
+            type="button"
+            (click)="toggleMode()"
+            class="toggle-link"
+          >
+            {{ isLoginMode ? "Don't have an account? Sign up" : "Already have an account? Sign in" }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
